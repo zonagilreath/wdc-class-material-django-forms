@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" crossorigin="anonymous">
+    <title>Our library</title>
+  </head>
+  <body style='padding: 0px 20px'>
+    <h1>Welcome to our Library!</h1>
+    <p><b>These are our selected authors:</b></p>
+    <table class="pure-table pure-table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Author Name</th>
+          <th>Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for author in authors %}
+          <tr>
+            <td>{{ author.id }}</td>
+            <td><a href="{% url 'author_by_id' author.id %}">{{ author.name}}</a></td>
+            <td>{{ author.country.name}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
