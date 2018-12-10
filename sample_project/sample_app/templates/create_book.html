@@ -1,0 +1,7 @@
+<h1>Create Book:</h1>
+<form class="" action="/create_book/" method="POST">
+  {% csrf_token %}
+  {{book_form.as_p}}
+  <a href="/"><button type="button">← Back</button></a>
+  <input type="submit" value="Create">
+</form>
