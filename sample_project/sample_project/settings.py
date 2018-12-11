@@ -38,12 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # New required apps
     'bootstrap4',
     'crispy_forms',
 
     'sample_app'
 ]
 
+# New setting needed
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
