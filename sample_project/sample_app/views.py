@@ -26,48 +26,50 @@ def index(request):
 
 
 def create_book(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        book_form = BookForm()
+        return render(
+            request,
+            'create_book.html',
+            context={'book_form': book_form}
+        )
+    elif request.method == 'POST':
         book_form = BookForm(request.POST)
         if book_form.is_valid():
-            Book.objects.create(**book_form.cleaned_data)
+            book_form.save()
             return redirect('index')
-    else:
-        book_form = BookForm()
-    return render(
-        request,
-        'create_book.html',
-        context={'book_form': book_form}
-    )
+        return render(
+            request,
+            'create_book.html',
+            context={'book_form': book_form}
+        )
 
 
 def edit_book(request, book_id=None):
     book = get_object_or_404(Book, id=book_id)
-    if request.method == 'POST':
-        book_form = BookForm(request.POST)
-        if book_form.is_valid():
-            book.title = book_form.cleaned_data.get('title')
-            book.author = book_form.cleaned_data.get('author')
-            book.isbn = book_form.cleaned_data.get('isbn')
-            book.popularity = book_form.cleaned_data.get('popularity')
-            book.save()
-            return redirect('index')
-    else:
-        book_form = BookForm(
-            initial={
-                'title': book.title,
-                'author': book.author,
-                'isbn': book.isbn,
-                'popularity': book.popularity
+    if request.method == 'GET':
+        book_form = BookForm(instance=book)
+        return render(
+            request,
+            'edit_book.html',
+            context={
+                'book': book,
+                'book_form': book_form
             }
         )
-    return render(
-        request,
-        'edit_book.html',
-        context={
-            'book': book,
-            'book_form': book_form
-        }
-    )
+    elif request.method == 'POST':
+        book_form = BookForm(request.POST, instance=book)
+        if book_form.is_valid():
+            book_form.save()
+            return redirect('index')
+        return render(
+            request,
+            'edit_book.html',
+            context={
+                'book': book,
+                'book_form': book_form
+            }
+        )
 
 
 def delete_book(request):
