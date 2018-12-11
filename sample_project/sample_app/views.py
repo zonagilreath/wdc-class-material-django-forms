@@ -18,7 +18,7 @@ def index(request):
     if 'q' in request.GET:
         q = request.GET['q']
         books = books.filter(title__icontains=q)
-    return render(request, 'index.html', {
+    return render(request, 'books.html', {
         'books': books,
         'authors': Author.objects.all(),
         'sort_method': sort_method,

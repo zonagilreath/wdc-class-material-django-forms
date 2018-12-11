@@ -1,7 +1,12 @@
-<h1>Edit Book:</h1>
-<form class="" action="/edit_book/{{book.id}}/" method="POST">
-  {% csrf_token %}
-  {{book_form.as_p}}
-  <a href="/"><button type="button">← Back</button></a>
-  <input type="submit" value="Edit">
-</form>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+  <form action="/edit_book/{{book.id}}/" method="POST">
+    <p class="h3">Edit Book:</p>
+    {% csrf_token %}
+    {{book_form|crispy}}
+    <a href="/"><button type="button" class="btn btn-outline-primary">← Back</button></a>
+    <input type="submit" value="Edit" class="btn btn-primary">
+  </form>
+{% endblock %}

@@ -1,7 +1,12 @@
-<h1>Create Book:</h1>
-<form class="" action="/create_book/" method="POST">
-  {% csrf_token %}
-  {{book_form.as_p}}
-  <a href="/"><button type="button">← Back</button></a>
-  <input type="submit" value="Create">
-</form>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+  <form action="/create_book/" method="POST">
+    <p class="h3">Create Book:</p>
+    {% csrf_token %}
+    {{book_form|crispy}}
+    <a href="/"><button type="button" class="btn btn-outline-primary">← Back</button></a>
+    <input type="submit" value="Create" class="btn btn-primary">
+  </form>
+{% endblock %}
