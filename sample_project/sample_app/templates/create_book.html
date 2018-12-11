@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    {{data}}
-  </body>
-</html>
+<h1>Create a new book</h1>
+<form class="" action="/create_book/" method="POST">
+  {% csrf_token %}
+
+  <label for="title">Title:</label>
+  <input id="title" type="text" name='title' value='{{book_data.title|default:""}}' {% if 'title' in errors %}style='border: 1px red solid'{% endif %}> <span style='color:red'>{{errors.title}}</span>
+
+    <br>
+
+  <label for="author">Author:</label>
+  <select id="author" name="author">
+    {% for author in authors %}
+      <option value="{{ author.id }}" {% if book_data.author == author.id|stringformat:"i" %}selected{% endif %}>{{ author.name }}</option>
+    {% endfor %}
+  </select>
+
+  <br>
+
+  <label for="isbn">ISBN:</label>
+  <input id="isbn" type="text" name='isbn' value='{{book_data.isbn|default:""}}' {% if 'isbn' in errors %}style='border: 1px red solid'{% endif %}> <span style='color:red'>{{errors.isbn}}</span>
+
+  <br>
+
+  <label for="popularity">Popularity:</label>
+  <input id="popularity" type="number" name='popularity' value='{{book_data.popularity|default:""}}' step="0.1" {% if 'popularity' in errors %}style='border: 1px red solid'{% endif %}> <span style='color:red'>{{errors.popularity}}</span>
+  <br>
+  <a href="/"><button type="button">← Back</button></a>
+  <input type="submit" value="Create book">
+</form>

@@ -44,33 +44,6 @@
       </tbody>
     </table>
     <p><a href="{% url 'authors' %}">Prefer to browse by author?</a></p>
-    <h1>Create a new book</h1>
-    <form class="" action="/" method="POST">
-      {% csrf_token %}
-
-      <label for="title">Title:</label>
-      <input id="title" type="text" name='title' value='' {% if 'title' in errors %}style='border: 1px red solid'{% endif %}> <span style='color:red'>{{errors.title}}</span>
-
-        <br>
-
-      <label for="author">Author:</label>
-      <select id="author" name="author">
-        {% for author in authors %}
-          <option value="{{ author.id }}">{{ author.name }}</option>
-        {% endfor %}
-      </select>
-
-      <br>
-
-      <label for="isbn">ISBN:</label>
-      <input id="isbn" type="text" name='isbn' {% if book_data and 'isbn' in book_data %} value='{{book_data.isbn}}' {% else %} value='' {% endif %}>
-
-      <br>
-
-      <label for="popularity">Popularity:</label>
-      <input id="popularity" type="number" name='popularity' value='3.5' step="0.1">
-      <br>
-      <input type="submit" value="Create book">
-    </form>
+    <a href="/create_book/"><button type="button">Create Book</button></a>
   </body>
 </html>

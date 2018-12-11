@@ -7,21 +7,6 @@ from .models import Author, Book
 
 
 def index(request):
-    errors = {}
-    has_errors = False
-    book_data = {}
-    if request.method == 'POST':
-        book_data = {
-            'title': request.POST.get('title'),
-            'author': request.POST.get('author'),
-            'isbn': request.POST.get('isbn'),
-            'popularity': request.POST.get('popularity'),
-        }
-        title = request.POST.get('title')
-        if not title:
-            has_errors = True
-            errors['title'] = "A title must be provided"
-
     sort_method = request.GET.get('sort', 'asc')
     books = Book.objects.all()
     if sort_method == 'asc':
@@ -36,24 +21,44 @@ def index(request):
         'books': books,
         'authors': Author.objects.all(),
         'sort_method': sort_method,
-        'book_data': book_data,
-        'has_errors': has_errors,
-        'errors': errors,
     })
 
 
 def create_book(request):
-    # author = Author.objects.get(id=request.POST['author'])
-    author = get_object_or_404(Author, id=request.POST['author'])
+    authors = Author.objects.all()
+    if request.method == 'GET':
+        return render(request, 'create_book.html', {'authors': authors})
+    elif request.method == 'POST':
+        errors = {}
+        book_data = {
+            'title': request.POST.get('title'),
+            'author': request.POST.get('author'),
+            'isbn': request.POST.get('isbn'),
+            'popularity': request.POST.get('popularity'),
+        }
+        for field in ['title', 'author', 'isbn', 'popularity']:
+            if not request.POST.get(field):
+                errors[field] = 'This field is required.'
 
-    # here
-    Book.objects.create(
-        title=request.POST['title'],
-        author=author,
-        isbn=request.POST['isbn'],
-        popularity=request.POST['popularity'])
+        if errors:
+            return render(
+                request,
+                'create_book.html',
+                {
+                    'authors': authors,
+                    'errors': errors,
+                    'book_data': book_data
+                }
+            )
 
-    return redirect('/')
+        author = get_object_or_404(Author, id=request.POST['author'])
+        Book.objects.create(
+            title=request.POST['title'],
+            author=author,
+            isbn=request.POST['isbn'],
+            popularity=request.POST['popularity']
+        )
+        return redirect('/')
 
 
 def edit_book(request, book_id=None):
